@@ -1,5 +1,5 @@
 
-int SAFE_BAUD_RATE = 4800;
+int SAFE_BAUD_RATE = 19200;
 int FREQUENCY = 16000000;
 
 char data_buffer[64];
@@ -25,16 +25,16 @@ void setup() {
 
   resetBuffer();
 
-  Serial.begin(9600);
+  Serial.begin(19200);
   
-  delay(100);
+  delay(2000);
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   
-    delay(2000);
+    delay(100);
   
   if ((UCSR2A & (1 << RXC2)) != 0) {
     data_buffer[buf_head] = UDR2;

@@ -28,25 +28,32 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
-unsigned char data[] = "Hello, world";
-int data_len = 12;
+unsigned char data[] = "Hello, world\n";
+char receive_buf[16];
+int data_len = 13;
 int current_cursor = 0;
 
 void setup() {
   // set the data rate for the SoftwareSerial port
-  mySerial.begin(4800);
-  delay(5000);
+  mySerial.begin(19200);
+  Serial.begin(19200);
+  delay(2000);
 }
 
 void loop() { // run over and over
-  delay(1000);
+  delay(100);
   
   mySerial.write(data[current_cursor % data_len]);
   current_cursor++;
 
   int avail = mySerial.available();
   while(avail <= 0) {
-    delay(100);
     avail = mySerial.available();
   }
+  for (int i = 0; i < avail; ++i) {
+    receive_buf[i % 16] = mySerial.read();
+  }
+
+  receive_buf[avail % 16] = 0;
+  Serial.println(receive_buf);
 }
